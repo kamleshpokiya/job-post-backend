@@ -11,7 +11,7 @@ const jobSchema = new mongoose.Schema(
     extractedData: {
       jobTitle: { type: String, default: null },
       experience: { type: String, default: null },
-      position: { type: String, default: null },
+      // position: { type: String, default: null },
       skills: { type: [String], default: null },
       location: { type: String, default: null },
       jobType: { type: String, default: null },

@@ -57,18 +57,20 @@ const systemInstruction = `You are an AI Job Description Assistant. Read the use
 1) Enhance job description (if valid)
 2) Return error (if invalid)
 
-GENERAL RULES:
-• Preserve EXACT format, line breaks, spacing, and style of user input.
-• Fix ONLY grammar and spelling.
-• Do NOT add new info or remove info.
-• No greetings, no emojis, no explanations.
-• Final output must be under 1500 characters.
-
 VALID JOB DESCRIPTION RULE:
-• Must clearly describe a real job.
-• Must contain meaningful job-related details (role, responsibility, skills, experience, location, job type, etc.).
-• Repeated words or filler text (e.g., “we want laravel developer” repeated 20 times) is NOT a valid job.
-• Sexual, illegal, abusive, or unrelated content is invalid.
+A valid job description must:
+• Clearly describe a real, normal job.
+• Stay consistent and job-related from start to end.
+• Include meaningful job details (role, skills, experience, duties, location, job type, etc.).
+• NOT drift into unrelated, fictional, abusive, illegal, impossible, or nonsense content.
+• NOT mix job content with irrelevant personal messages, insults, random text, or storytelling.
+
+INVALID IF:
+• Any part becomes unrelated (e.g., pets, office drama, personal notes).
+• Any part becomes fictional/sci-fi/fantasy (parallel dimensions, magic, time travel, etc.).
+• Any part becomes impossible (debugging satellites in orbit, telepathy).
+• Any part becomes abusive, sexual, threatening, or insulting.
+• Mostly filler, repeated text, or meaningless.
 
 IF VALID:
 • Output ONLY the enhanced job description, same formatting preserved.
@@ -81,6 +83,15 @@ IF INVALID:
     "message": "This doesn't seem to be a proper job description."
   }
 }
+
+GENERAL RULES:
+• Preserve EXACT format, line breaks, spacing, emojis and style of user input.
+• Fix ONLY grammar and spelling.
+• Do NOT add new info or remove info.
+• No greetings, no explanations.
+• Final output must be under 1500 characters.
+• PRESERVE 100% OF THE ORIGINAL HTML STRUCTURE.
+• DO NOT remove, add, rename, or reorder any HTML tags.
 `;
 
 export const enhanceJobDescription = async (req, res) => {
@@ -117,20 +128,21 @@ export const enhanceJobDescription = async (req, res) => {
     // const enhancedDescription = response.text.trim();
 
     // console.log("Enhanced Description: ", enhancedDescription);
-    
+
     // Groq API
     const response = await groq.chat.completions.create({
       model: "llama-3.3-70b-versatile",
+      // model: "llama-3.1-8b-instant",
       messages: [
         { role: "system", content: systemInstruction },
         { role: "user", content: description },
       ],
-      max_completion_tokens: 600,
+      // max_completion_tokens: 600,
     });
-    
+
     console.log("Response: ", response);
     console.log("Response >>>>>>>: ", response.choices[0].message.content);
-    
+
     const enhancedDescription = response.choices[0].message.content;
 
     // Check if the AI returned an error response (JSON string)

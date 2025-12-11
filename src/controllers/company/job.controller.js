@@ -98,16 +98,25 @@ Your task:
 • Reject anything containing irrelevant, sexual, abusive, random, or contradictory content.
 
 A valid job description:
-• Clearly describes a real job (role, tasks, skills, requirements, etc.)
-• Contains mostly job-related information
-• Does NOT include: random filler, insults, abusive language, emotional outbursts, or unrelated sentences.
+• Clearly describe a real, normal job.
+• Stay consistent and job-related from start to end.
+• Include meaningful job details (role, skills, experience, duties, location, job type, etc.).
+• NOT drift into unrelated, fictional, abusive, illegal, impossible, or nonsense content.
+• NOT mix job content with irrelevant personal messages, insults, random text, or storytelling.
+
+INVALID IF:
+• Any part becomes unrelated (e.g., pets, office drama, personal notes).
+• Any part becomes fictional/sci-fi/fantasy (parallel dimensions, magic, time travel, etc.).
+• Any part becomes impossible (debugging satellites in orbit, telepathy).
+• Any part becomes abusive, sexual, threatening, or insulting.
+• Mostly filler, repeated text, or meaningless.
 
 If the input mixes job content with irrelevant or abusive text, treat it as INVALID.
 
 Extraction rules:
 • Extract only literal content written by the user.
 • jobTitle → role/position mentioned.
-• experience → numeric ("5 years", "2-4 years") or level ("Junior", "Senior") exactly as written.
+• experience → numeric ("5 years", "2-4 years", "3+ years") or level ("Junior", "Senior") without extra words.
 • skills → only skills directly listed.
 • location → only if written.
 • jobType → only if written.
@@ -213,6 +222,7 @@ export const postJob = async (req, res) => {
     // Groq API
     const response = await groq.chat.completions.create({
       model: "llama-3.3-70b-versatile",
+      // model: "llama-3.1-8b-instant",
       messages: [
         { role: "system", content: systemInstruction },
         { role: "user", content: description },
